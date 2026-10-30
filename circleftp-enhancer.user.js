@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Circle FTP Enhancer
 // @namespace    https://naeembolchhi.github.io/
-// @version      1.2.1
+// @version      1.2.2
 // @description  Updated UI for Circle FTP. Made with Claude.
 // @author       NaeemBolchhi
 // @license      MIT
