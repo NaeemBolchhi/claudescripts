@@ -10,6 +10,8 @@
 // @match        https://new.circleftp.net/*
 // @run-at       document-start
 // @grant        none
+// @downloadURL  https://github.com/NaeemBolchhi/claudescripts/raw/refs/heads/main/circleftp-enhancer.user.js
+// @updateURL    https://github.com/NaeemBolchhi/claudescripts/raw/refs/heads/main/circleftp-enhancer.user.js
 // ==/UserScript==
 
 (function () {
