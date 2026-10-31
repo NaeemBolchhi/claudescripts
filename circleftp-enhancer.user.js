@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Circle FTP Enhancer
 // @namespace    https://naeembolchhi.github.io/
-// @version      1.2.2
+// @version      1.2.3
 // @description  Updated UI for Circle FTP. Made with Claude.
 // @author       NaeemBolchhi
 // @license      MIT
@@ -292,7 +292,7 @@ section .table .btn-danger:hover,section .table .btn-danger:focus{background:var
   section .table .btn{width:100%;padding:.55rem 1rem}
 }
 
-/* series: replace the site's Play buttons with our own (see section 9 of the script) */
+/* series: replace the site's Play buttons with our own (see section 7b of the script) */
 section .table .btn-danger{display:none!important}
 .cfx-play{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.4rem 1rem;font-size:.85rem;
   font-weight:600;line-height:1.5;border-radius:999px;min-width:104px;background:var(--accent);border:1px solid var(--accent);
@@ -324,6 +324,22 @@ section .table tr.cfx-playing{border-color:var(--accent);box-shadow:inset 3px 0 
 @media (min-width:1400px){
   [class*="ContentPage_contentPage_title"]~.container{grid-template-columns:260px minmax(0,1fr)}
 }
+
+/* ---------- Content page title bar ---------- */
+main:has([class*="ContentPage_contentPage_title"]){margin-top:0!important}
+[class*="ContentPage_contentPage_title"]{
+  background:linear-gradient(90deg,rgba(229,9,20,.16),rgba(229,9,20,0) 55%),var(--surface)!important;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:.9rem 0!important;margin:0!important;text-align:left!important;color:var(--text)!important}
+[class*="ContentPage_contentPage_title"]>div{
+  max-width:1280px;margin:0 auto;padding-inline:clamp(10px,3vw,40px);
+  justify-content:flex-start!important}
+[class*="ContentPage_contentPage_title"] h2{
+  display:flex;align-items:center;gap:.7rem;text-align:left;max-width:none;margin:0;
+  font-size:clamp(1.1rem,4.2vw,1.55rem);font-weight:700;line-height:1.3;letter-spacing:.01em;color:#fff}
+[class*="ContentPage_contentPage_title"] h2::before{
+  content:"";flex:none;width:4px;height:1.3em;background:var(--accent);border-radius:3px}
+[class*="ContentPage_contentPage_title"] h2::after{display:none!important}
 
 /* ---------- Floating controls + filter panel ---------- */
 [data-cfx-hide]{display:none!important}
@@ -791,12 +807,15 @@ section .table tr.cfx-playing{border-color:var(--accent);box-shadow:inset 3px 0 
     if (!sections.length) { if (cur || $('.cfx-player')) removePlayer(); return; }
     sections.forEach((sec) => {
       $$('tbody tr', sec).forEach((tr) => {
-        if ($('.cfx-play', tr)) return;
+        const orig = $('.btn-danger', tr);           // the site's own Play button
+        if (!orig) {                                  // no original -> no custom button
+          $$('.cfx-play', tr).forEach((b) => b.remove());
+          return;
+        }
+        if ($('.cfx-play', tr)) return;               // already added
         const a = $('a[href]', tr);
-        if (!a) return;
-        const orig = $('.btn-danger', tr);
-        const td = (orig && orig.closest('td')) || tr.lastElementChild;
-        if (!td) return;
+        const td = orig.closest('td');
+        if (!a || !td) return;
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'cfx-play';
